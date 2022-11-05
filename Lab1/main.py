@@ -8,3 +8,11 @@ def save_image(image_url, name, i):
     saver = open(f"dataset/{name}/{i:04d}.jpg", "wb")
     saver.write(req.content)
     saver.close()
+
+    def check_folder():
+        """проверка существования папки"""
+        try:
+            os.mkdir("dataset")
+        except:
+            shutil.rmtree("dataset")
+            os.mkdir("dataset")
