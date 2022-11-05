@@ -44,3 +44,8 @@ def save_image(image_url, name, i):
                     page += 1
                 print("Images save: ")
                 print(data)
+
+if __name__ == "__main__":
+    check_folder()
+    get_images_url("rose")
+    get_images_url("tulip")
