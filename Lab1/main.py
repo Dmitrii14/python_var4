@@ -42,8 +42,7 @@ def get_images_url(name):
                 i += 1
         if (i > 999): break
         page += 1
-    print("Images save: ")
-    print(data)
+    print("Images save!")
 
 if __name__ == "__main__":
     check_folder()
