@@ -10,7 +10,7 @@ URL = "https://yandex.ru/images/"  # ссылка на страничку html
 def save_image(image_url, name, i):
     """сохранение картинки в папку"""
     req = requests.get(f"https:{image_url}")
-    file = os.path.join(f"dataset/{name}/{i:04d}.jpg")
+    file = os.path.join(f"../Lab2/dataset/{name}/{i:04d}.jpg")
     with open(file, "wb") as saver:
         saver.write(req.content)
 
@@ -18,11 +18,11 @@ def save_image(image_url, name, i):
 def check_folder():
     """проверка существования папки"""
     try:
-        if not os.path.isdir("dataset"):
-            os.mkdir("dataset")
+        if not os.path.isdir("../Lab2/dataset"):
+            os.mkdir("../Lab2/dataset")
         else:
-            shutil.rmtree("dataset")
-            os.mkdir("dataset")
+            shutil.rmtree("../Lab2/dataset")
+            os.mkdir("../Lab2/dataset")
     except OSError as err:
         print(f"Возникла ошибка!!{err}")
 
@@ -40,7 +40,7 @@ def get_images_url(name):
     data = []
     searcher = html.findAll("img")
     try:
-        os.mkdir(f"dataset/{name}")
+        os.mkdir(f"../Lab2/dataset/{name}")
     except PermissionError:
         print("Unable to create a directory")
     for event in searcher:

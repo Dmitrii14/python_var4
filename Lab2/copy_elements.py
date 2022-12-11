@@ -1,7 +1,7 @@
 import os
 import shutil
-import Main
-from Main import Data
+import main
+from main import Data
 
 
 def make_dir(obj: type(Data)) -> None:
@@ -27,4 +27,4 @@ def teleport_dir(obj: type(Data), path: str, class_name: str) -> None:
 
 
 if __name__ == "__main__":
-    teleport_dir(Data("dataset"), "C:\Users\User\Documents\GitHub\python_var4\Lab2", Main.CLASS_DEFAULT[0])
+    teleport_dir(Data("dataset"), "C:\Users\User\Documents\GitHub\python_var4\Lab2", main.CLASS_DEFAULT[0])

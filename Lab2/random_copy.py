@@ -2,8 +2,8 @@ import os
 import random
 import shutil
 import copy_elements as ce
-import Main
-from Main import Data
+import main
+from main import Data
 
 
 def create_copy_dataset_with_random_number(obj: type(Data), path: str, class_name: str) -> None:
@@ -22,4 +22,4 @@ def create_copy_dataset_with_random_number(obj: type(Data), path: str, class_nam
 
 if __name__ == "__main__":
     create_copy_dataset_with_random_number(Data("dataset"), "C:\Users\User\Documents\GitHub\python_var4\Lab2",
-                                           Main.CLASS_DEFAULT[0])
+                                           main.CLASS_DEFAULT[0])

@@ -1,5 +1,5 @@
 import next_element as ne
-from Main import Data
+from main import Data
 
 
 class IteratorOfExemplar:
