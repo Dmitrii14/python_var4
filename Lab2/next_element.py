@@ -17,3 +17,9 @@ def next_element(obj: type(Data), pointer: str) -> str:
                     status = True
             i += 1
     return None
+
+
+if __name__ == "__main__":
+    obj = Data("dataset")
+    next = next_element(obj, "dataset\\rose\\0751.jpg")
+    print(next)
