@@ -1,18 +1,27 @@
-import next_element as ne
-from main import Data
+import csv
 
 
-class IteratorOfExemplar:
-    def __init__(self, obj: type(Data), pointer: str):
-        self.obj = obj
-        self.pointer = pointer
-        self.counter = 0
+class Iterator:
+    def __init__(self, file_name, class_name):
+        self.limit = -1
+        self.counter = -1
+        self.file_name = file_name
+        self.class_name = class_name
+        self.rows = []
+        with open(file_name, encoding='utf-8') as file:
+            reader = csv.reader(file, delimiter=";")
+            for row in reader:
+                if row[2] == class_name:
+                    self.rows.append(row[0] + ';' + row[2])
+                    self.limit += 1
 
-    def __next__(self) -> str:
-        self.pointer = ne.next_element(self.obj, self.pointer)
-        return self.pointer
+    def __iter__(self):
+        return self
 
-
-if __name__ == "__main__":
-    iter = IteratorOfExemplar(Data("dataset"),  "dataset\\rose\\0002.jpg")
-    print(iter.__next__())
+    def __next__(self):
+        if self.counter < self.limit:
+            self.counter += 1
+            return self.rows[self.counter]
+        else:
+            print('None')
+            raise StopIteration
