@@ -1,25 +1,26 @@
-import os
 import csv
+import os
+import get_path
 
-CLASS_DEFAULT = ["rose", "tulip"]  # базовые названия
+
+def create_annotation(class_name):
+    with open("annotation.csv", mode="a", encoding='utf-8') as w_file:
+        file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
+        file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])
+        for i in range(1050):
+            if (os.path.isfile(get_path.get_absolute_way(class_name, i, "download")) == True):
+                file_writer.writerow([get_path.get_absolute_way(class_name, i, "download"),
+                                      get_path.download_relative_way(class_name, i), class_name])
 
 
-class Data:
-    def __init__(self, dir_name: str) -> None:
-        self.number_lines = 0
-        self.viewed_files = 1
-        self.dir_name = dir_name
+def main():
+    print("Start")
+    class_name = "rose"
+    create_annotation(class_name)
+    class_name = "tulip"
+    create_annotation(class_name)
+    print("The end")
 
-    def add(self, path: str, class_name: str, name_image: str) -> None:
-        with open("annotation.csv", "a", encoding="utf-8", newline="") as file:
-            writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-            if self.number_lines == 0:  # если кол-во строк = 0, то это заголовки файла аннотация
-                writer.writerow([
-                    "абсолютный путь",
-                    "относительный путь",
-                    "класс"
-                ])
-                self.number_lines += 1
-            writer.writerow([os.path.join(path, self.dir_name, class_name, name_image),
-                             os.path.join(self.dir_name, class_name, name_image), class_name])
-            self.number_lines += 1
+
+if __name__ == "__main__":
+    main()
