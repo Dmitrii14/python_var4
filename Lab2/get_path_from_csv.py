@@ -1,11 +1,13 @@
-from iterator_class import Iterator
+from iterator_class import IteratorOfExemplar
 
 
 def main():
-    i = Iterator("annotation.csv", "rose")
+    """
+        Функция возвращает путь к изображению внутри файла+
+    """
+    i = IteratorOfExemplar("annotation.csv", "rose")
     for val in i:
         print(val)
-
     print('program _2_get_way_from_csv finished')
 
 

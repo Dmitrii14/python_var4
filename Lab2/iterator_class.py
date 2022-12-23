@@ -1,8 +1,14 @@
 import csv
 
 
-class Iterator:
-    def __init__(self, file_name, class_name):
+class IteratorOfExemplar:
+    """
+        Класс нужен чтобы обойти объекты внутри собственного класса
+    """
+    def __init__(self, file_name: str, class_name: str):
+        """
+            Функция зписывает в файл абсолютный и относительный путь и название класса через ;
+        """
         self.limit = -1
         self.counter = -1
         self.file_name = file_name
@@ -16,12 +22,18 @@ class Iterator:
                     self.limit += 1
 
     def __iter__(self):
+        """
+            Функция просто возвращает self
+        """
         return self
 
     def __next__(self):
+        """
+            Функция перехода к следующему элементу
+        """
         if self.counter < self.limit:
             self.counter += 1
             return self.rows[self.counter]
         else:
-            print('None')
             raise StopIteration
+            return None
