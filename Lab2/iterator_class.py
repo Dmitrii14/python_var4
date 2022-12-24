@@ -21,13 +21,13 @@ class IteratorOfExemplar:
                     self.rows.append(row[0] + ';' + row[2])
                     self.limit += 1
 
-    def __iter__(self):
+    def __iter__(self) -> str:
         """
             Функция просто возвращает self
         """
         return self
 
-    def __next__(self):
+    def __next__(self) -> str:
         """
             Функция перехода к следующему элементу
         """

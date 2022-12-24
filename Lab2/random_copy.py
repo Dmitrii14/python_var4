@@ -27,7 +27,7 @@ def random_copy(class_name: str):
                      class_name])
 
 
-def main():
+if __name__ == "__main__":
     """
         Главная функция выполнения программы и вывода в консоль начало и конец функции
     """
@@ -39,7 +39,3 @@ def main():
     class_name = "tulip"
     random_copy(class_name)
     print("Successful random copying of the annotation of images")
-
-
-if __name__ == "__main__":
-    main()

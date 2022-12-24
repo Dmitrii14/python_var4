@@ -19,7 +19,7 @@ def create_annotation(class_name: str):
                                       get_path.download_relative_path(class_name, i), class_name])
 
 
-def main():
+if __name__ == "__main__":
     """
         Главная функция выполнения программы и вывода в консоль начало и конец функции
     """
@@ -29,7 +29,3 @@ def main():
     class_name = "tulip"
     create_annotation(class_name)
     print("Successful creation of an annotation of images")
-
-
-if __name__ == "__main__":
-    main()
