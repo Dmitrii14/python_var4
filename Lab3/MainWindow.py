@@ -70,3 +70,18 @@ class MainWindow(QMainWindow):
         self.go_to_exit.clicked.connect(self.exit)
 
         self.show()
+
+    def add_button(self, name: str, size_x: int, size_y: int, pos_x: int, pos_y: int):
+        """
+            Создание кнопки
+            :name: - название кнопки
+            :size_x: - размер по x
+            :size_y: - размер по y
+            :pos_x: - позиция по x
+            :pos_y: - позиция по y
+        """
+        button = QPushButton(name, self)
+        button.setFixedSize(QSize(size_x, size_y))
+        button.move(pos_x, pos_y)
+        return button
+
