@@ -1,3 +1,5 @@
+from iterator_class import IteratorOfExemplar
+import sys
 import os
 from enum import Enum
 from PyQt6.QtCore import QSize
@@ -85,3 +87,26 @@ class MainWindow(QMainWindow):
         button.move(pos_x, pos_y)
         return button
 
+    def next(self, image_path: str, index: int, count: int):
+        """
+            метод перехода к следующей картинки
+        """
+        try:
+            if count >= 1000 or count < 1:
+                image_path = os.path.join("dataset", index, "0001.jpg")
+            else:
+                next = IteratorOfExemplar("annotation.csv", image_path).__next__()
+                next.replace("", '"')
+                image_path = next.replace("/", "\\")
+                count += 1
+            self.pic.setPixmap(QtGui.QPixmap(image_path.replace('"', "")))
+            if index == 0 and count != 0:
+                self.s_p_rose = image_path
+                self.count_r = count
+            elif index == 1 and count != 0:
+                self.s_p_tulip = image_path
+                self.count_t = count
+            else:
+                self.pic.setText('Ошибка!\n' + 'В нет начальных картинок: "rose" или "tulip"')
+        except OSError:
+            print("error")
