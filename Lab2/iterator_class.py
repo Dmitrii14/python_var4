@@ -8,6 +8,9 @@ class IteratorOfExemplar:
     def __init__(self, file_name: str, class_name: str):
         """
             Функция зписывает в файл абсолютный и относительный путь и название класса через ;
+            :file_name: - имя файла
+            :class_name: - имя класса
+            :reader: - считывает информацию из файла
         """
         self.limit = -1
         self.counter = -1

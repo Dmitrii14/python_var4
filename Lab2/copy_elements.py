@@ -4,7 +4,6 @@ import get_path
 import shutil
 import logging
 logging.basicConfig(level=logging.DEBUG, filename="changed_annotation.csv", filemode="w")
-logging.debug("Copying the annotation of images")
 
 
 def copy_to_another(class_name: str):

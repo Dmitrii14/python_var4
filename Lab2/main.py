@@ -3,12 +3,13 @@ import os
 import get_path
 import logging
 logging.basicConfig(level=logging.DEBUG, filename="annotation.csv", filemode="w")
-logging.debug("Creating an annotation of images")
 
 
 def create_annotation(class_name: str):
     """
         Функция создает файл аннотацию в который записывается абсолютный и относительный путь и класс
+        :file_writer: - запись в файл
+        :class_name: - имя класса
     """
     with open("annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")

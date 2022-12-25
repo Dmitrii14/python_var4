@@ -5,12 +5,13 @@ import csv
 import random
 import logging
 logging.basicConfig(level=logging.DEBUG, filename="random_annotation.csv", filemode="w")
-logging.debug("Random copying of the annotation of images")
 
 
 def random_copy(class_name: str):
     """
         Функция нужна для создания файла и рандомного копирования изображений в новый файл из файла annotation
+        :class_name: - имя класса
+        :rand_number: - находит случайное число от 0 до 10000
     """
     with open("random_annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
