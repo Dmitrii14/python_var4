@@ -4,8 +4,8 @@ import shutil
 import csv
 import random
 import logging
-logging.basicConfig(level=logging.INFO, filename="random_annotation.csv", filemode="w")
-logging.info("Random copying of the annotation of images")
+logging.basicConfig(level=logging.DEBUG, filename="random_annotation.csv", filemode="w")
+logging.debug("Random copying of the annotation of images")
 
 
 def random_copy(class_name: str):
@@ -28,9 +28,6 @@ def random_copy(class_name: str):
 
 
 if __name__ == "__main__":
-    """
-        Главная функция выполнения программы и вывода в консоль начало и конец функции
-    """
     print("The beginning of random copying of the annotation of images")
     if not os.path.isdir("dataset/random_dataset"):
         os.mkdir("dataset/random_dataset")

@@ -3,8 +3,8 @@ import os
 import get_path
 import shutil
 import logging
-logging.basicConfig(level=logging.INFO, filename="changed_annotation.csv", filemode="w")
-logging.info("Copying the annotation of images")
+logging.basicConfig(level=logging.DEBUG, filename="changed_annotation.csv", filemode="w")
+logging.debug("Copying the annotation of images")
 
 
 def copy_to_another(class_name: str):
@@ -24,9 +24,6 @@ def copy_to_another(class_name: str):
 
 
 if __name__ == "__main__":
-    """
-        Главная функция выполнения программы и вывода в консоль начало и конец функции
-    """
     print("The beginning of copying the annotation of images")
     if not os.path.isdir("dataset/changed_dataset"):
         os.mkdir("dataset/changed_dataset")
