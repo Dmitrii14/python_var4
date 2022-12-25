@@ -37,3 +37,14 @@ class IteratorOfExemplar:
         else:
             raise StopIteration
             return None
+
+    def __back__(self) -> str:
+        """
+            возвращает предыдущий элемент
+        """
+        if self.counter < self.limit:
+            self.counter -= 1
+            return self.rows[self.counter]
+        else:
+            raise StopIteration
+            return None
