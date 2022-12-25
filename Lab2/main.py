@@ -2,8 +2,8 @@ import csv
 import os
 import get_path
 import logging
-logging.basicConfig(level=logging.INFO, filename="annotation.csv", filemode="w")
-logging.info("Creating an annotation of images")
+logging.basicConfig(level=logging.DEBUG, filename="annotation.csv", filemode="w")
+logging.debug("Creating an annotation of images")
 
 
 def create_annotation(class_name: str):
@@ -20,9 +20,6 @@ def create_annotation(class_name: str):
 
 
 if __name__ == "__main__":
-    """
-        Главная функция выполнения программы и вывода в консоль начало и конец функции
-    """
     print("Start creating an annotation of images")
     class_name = "rose"
     create_annotation(class_name)
