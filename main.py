@@ -95,3 +95,24 @@ class DataAnalysis:
         return [cv2.calcHist([img], [0], None, [256], [0, 256]) / (height * width),
                 cv2.calcHist([img], [1], None, [256], [0, 256]) / (height * width),
                 cv2.calcHist([img], [2], None, [256], [0, 256]) / (height * width)]
+
+    def plots_the_histogram_data(self):
+        """
+            данная функция строит график по данным гистограммы
+        """
+        colors = ['b', 'g', 'r']
+        for i in range(len(colors)):
+            plt.plot(self.histogram_build("rose")[i], color=colors[i])
+        plt.ylabel('density')
+        plt.title('Image Histogram GFG')
+        plt.xlabel('intensity')
+        plt.xlim([0, 256])
+        plt.show()
+
+    def saving_in_csv_file(self, filename: str):
+        self.df.to_csv(filename)
+
+
+if __name__ == "__main__":
+    da = DataAnalysis()
+    da.plots_the_histogram_data()
