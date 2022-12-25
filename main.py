@@ -54,3 +54,22 @@ class DataAnalysis:
         self.df.drop(['абсолютный путь'], axis=1, inplace=True)
         self.df = self.df.rename(columns={'относительный путь': 'related_path', 'класс': 'name_class'})
         self.change_columns_dataframe()
+
+    def filter_label_class(self, mark_class: str) -> pd.DataFrame:
+        """
+            функция вернет отфильтрованный по метке класса dataframe. \
+            :mark_class: метка класса
+        """
+        return self.df[self.df.name_class == mark_class]
+
+    def multifunctional_filter(self, width_max: int, height_max: int,
+                               mark_class: str) -> pd.DataFrame:
+        """
+            данная функция вернет отфильтрованный по переданной максимальной высоте и ширине + метке класса dataframe.
+            :width_max: максимально возможная ширина
+            :height_max: максимально возможная высота
+            :mark_class: метка класса
+        """
+        return self.df[
+            ((self.df.name_class == mark_class) & (self.df.width <= width_max) & (self.df.height <= height_max))]
+
