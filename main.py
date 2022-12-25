@@ -73,3 +73,25 @@ class DataAnalysis:
         return self.df[
             ((self.df.name_class == mark_class) & (self.df.width <= width_max) & (self.df.height <= height_max))]
 
+    def grouping(self) -> tuple:
+        """
+            данная функция делает группировку dataframe, вычисляя min и max + cред.знач по пикселям.
+            min() - получение минимального
+            max() - получение максимального
+            mean() - сред.знач
+        """
+        self.df['pixels'] = self.df['height'] * self.df['width'] * self.df['channel']
+        return self.df.groupby('name_class').min(), self.df.groupby('name_class').max(), self.df.groupby(
+            'name_class').mean()
+
+    def histogram_build(self, mark_class: str) -> list:
+        """
+        данная функция выполняет построение гистограммы. На вход функция принимает dataframe и метку класса,
+        на выходе - три массива.
+        :mark_class: метка класса
+        """
+        img = cv2.imread(np.random.choice(self.filter_mark_class(mark_class).related_path.to_numpy()))
+        height, width, channel = img.shape
+        return [cv2.calcHist([img], [0], None, [256], [0, 256]) / (height * width),
+                cv2.calcHist([img], [1], None, [256], [0, 256]) / (height * width),
+                cv2.calcHist([img], [2], None, [256], [0, 256]) / (height * width)]
