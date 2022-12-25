@@ -1,9 +1,12 @@
+import copy_elements as cop
+import random_copy as ran
 from iterator_class import IteratorOfExemplar
 import sys
 import os
 from enum import Enum
+from main import create_annotation
 from PyQt6.QtCore import QSize
-from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QFileDialog, QGridLayout
+from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QFileDialog
 from PyQt6 import QtGui, QtWidgets
 
 
@@ -24,8 +27,8 @@ class MainWindow(QMainWindow):
         # стартовые значения
         self.count_r = 1
         self.count_t = 1
-        self.s_p_rose = os.path.join("dataset", Type.ROSE.value, "0001.jpg")
-        self.s_p_tulip = os.path.join("dataset", Type.TULIP.value, "0001.jpg")
+        self.s_p_rose = os.path.join("dataset", "rose", "0001.jpg")
+        self.s_p_tulip = os.path.join("dataset", "tulip", "0001.jpg")
 
         # кнопки
         self.btn_create_of_annotation = self.add_button("Создать аннотацию", 150, 50, 630, 50)
@@ -135,3 +138,51 @@ class MainWindow(QMainWindow):
         except OSError:
             print("error")
 
+    def create_annotation(self):
+        """
+            метод создания файла аннотации
+        """
+        try:
+            class_name = "rose"
+            create_annotation(class_name)
+            class_name = "tulip"
+            create_annotation(class_name)
+        except OSError:
+            print("error")
+
+    def copy_of_dataset(self):
+        """
+            метод создания копии dataset
+        """
+        try:
+            class_name = "rose"
+            cop.copy_to_another(class_name)
+            class_name = "tulip"
+            cop.copy_to_another(class_name)
+        except OSError:
+            print("error")
+
+    def random_of_dataset(self):
+        """
+            метод создания рандомизации датасет
+        """
+        try:
+            class_name = "rose"
+            ran.random_copy(class_name)
+            class_name = "tulip"
+            ran.random_copy(class_name)
+        except OSError:
+            print("error")
+
+    def exit(self):
+        """
+            метод выхода из программы
+        """
+        print("До свидания!")
+        self.quit()
+
+
+if __name__ == "__main__":
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        app.exec()
