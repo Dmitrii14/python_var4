@@ -1,4 +1,5 @@
 import csv
+import logging
 
 
 class IteratorOfExemplar:
@@ -16,6 +17,7 @@ class IteratorOfExemplar:
         self.counter = -1
         self.file_name = file_name
         self.class_name = class_name
+        self.logger = logging.getLogger(__name__)
         self.rows = []
         with open(file_name, encoding='utf-8') as file:
             reader = csv.reader(file, delimiter=";")
@@ -28,12 +30,14 @@ class IteratorOfExemplar:
         """
             Функция просто возвращает self
         """
+        self.logger = logging.getLogger(__name__)
         return self
 
     def __next__(self) -> str:
         """
             Функция перехода к следующему элементу
         """
+        self.logger = logging.getLogger(__name__)
         if self.counter < self.limit:
             self.counter += 1
             return self.rows[self.counter]

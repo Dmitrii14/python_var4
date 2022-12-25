@@ -10,6 +10,7 @@ def copy_to_another(class_name: str):
     """
         Функция нужна для создания файла и копирования изображений в новый файл из файла annotation
     """
+    logging.getLogger(__name__)
     with open("changed_annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])

@@ -11,6 +11,7 @@ def create_annotation(class_name: str):
         :file_writer: - запись в файл
         :class_name: - имя класса
     """
+    logging.getLogger(__name__)
     with open("annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])

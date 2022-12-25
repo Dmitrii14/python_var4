@@ -13,6 +13,7 @@ def random_copy(class_name: str):
         :class_name: - имя класса
         :rand_number: - находит случайное число от 0 до 10000
     """
+    logging.getLogger(__name__)
     with open("random_annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])
