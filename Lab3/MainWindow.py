@@ -107,6 +107,31 @@ class MainWindow(QMainWindow):
                 self.s_p_tulip = image_path
                 self.count_t = count
             else:
-                self.pic.setText('Ошибка!\n' + 'В нет начальных картинок: "rose" или "tulip"')
+                self.pic.setText('Ошибка!\n' + 'Нет начальных картинок: "rose" или "tulip"')
         except OSError:
             print("error")
+
+    def back(self, image_path: str, index: int, count: int):
+        """
+            метод перехода к предыдущей картинки
+        """
+        try:
+            if count >= 1000 or count < 1:
+                image_path = os.path.join("dataset", index, "0001.jpg")
+            else:
+                next = IteratorOfExemplar("annotation.csv", image_path).__back__()
+                next.replace("", '"')
+                image_path = next.replace("/", "\\")
+                count -= 1
+            self.pic.setPixmap(QtGui.QPixmap(image_path.replace('"', "")))
+            if index == 0 and count != 0:
+                self.s_p_rose = image_path
+                self.count_r = count
+            elif index == 1 and count != 0:
+                self.s_p_tulip = image_path
+                self.count_t = count
+            else:
+                self.pic.setText('Ошибка!\n' + 'Нет начальных картинок: "rose" или "tulip"')
+        except OSError:
+            print("error")
+
