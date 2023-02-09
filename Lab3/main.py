@@ -1,9 +1,6 @@
 import csv
 import os
 from Lab3 import get_path
-import logging
-logging.basicConfig(level=logging.INFO, filename="annotation.csv", filemode="w")
-logging.info("Creating an annotation of images")
 
 
 def create_annotation(class_name: str):

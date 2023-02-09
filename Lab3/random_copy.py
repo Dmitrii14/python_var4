@@ -3,9 +3,6 @@ from Lab3 import get_path
 import shutil
 import csv
 import random
-import logging
-logging.basicConfig(level=logging.INFO, filename="random_annotation.csv", filemode="w")
-logging.info("Random copying of the annotation of images")
 
 
 def random_copy(class_name: str):
@@ -16,10 +13,10 @@ def random_copy(class_name: str):
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])
         for i in range(1000):
-            rand_number = random.randint(0, 10000)
+            rand_number = random.randint(0, 1000)
             if (os.path.isfile(get_path.get_absolute_path(class_name, i, "download")) == True):
                 while (os.path.isfile(get_path.get_absolute_path(class_name, rand_number, "random")) == True):
-                    rand_number = random.randint(0, 10000)
+                    rand_number = random.randint(0, 1000)
                 shutil.copyfile(get_path.get_absolute_path(class_name, i, "download"),
                                 get_path.get_absolute_path(class_name, rand_number, "random"))
                 file_writer.writerow(

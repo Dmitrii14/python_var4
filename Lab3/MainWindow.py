@@ -9,6 +9,8 @@ from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QFileDialog
 from PyQt6 import QtGui, QtWidgets
 
+CLASS_DEFAULT = ["rose", "tulip"]
+
 
 class Type(Enum):
     ROSE = 0
@@ -25,20 +27,18 @@ class MainWindow(QMainWindow):
         src.setFixedSize(QSize(800, 50))
 
         # стартовые значения
-        self.count_r = 1
-        self.count_t = 1
-        self.s_p_rose = os.path.join("dataset", "rose", "0001.jpg")
-        self.s_p_tulip = os.path.join("dataset", "tulip", "0001.jpg")
+        self.count_r = 0
+        self.count_t = 0
+        self.s_p_rose = os.path.join("dataset", CLASS_DEFAULT[Type.ROSE.value], "0001.jpg")
+        self.s_p_tulip = os.path.join("dataset", CLASS_DEFAULT[Type.TULIP.value], "0001.jpg")
 
         # кнопки
-        self.btn_create_of_annotation = self.add_button("Создать аннотацию", 150, 50, 630, 50)
-        self.btn_copy_of_dataset = self.add_button("Копирование датасет", 150, 50, 630, 100)
-        self.btn_random_of_dataset = self.add_button("Рандомное датасет", 150, 50, 630, 150)
-        self.btn_next_rose = self.add_button("Следующая роза", 150, 50, 630, 250)
-        self.btn_back_rose = self.add_button("Предыдущая роза", 150, 50, 630, 300)
-        self.btn_next_tulip = self.add_button("Следующий тюльпан", 150, 50, 630, 350)
-        self.btn_back_tulip = self.add_button("Предыдущий тюльпан", 150, 50, 630, 400)
-        self.go_to_exit = self.add_button("Выйти", 150, 50, 630, 500)
+        self.btn_create_of_annotation = self.add_button("Создать аннотацию", 140, 50, 630, 50)
+        self.btn_copy_of_dataset = self.add_button("Копирование датасет", 140, 50, 630, 100)
+        self.btn_random_of_dataset = self.add_button("Рандомное датасет", 140, 50, 630, 150)
+        self.btn_next_rose = self.add_button("Следующая роза", 140, 50, 630, 200)
+        self.btn_next_tulip = self.add_button("Следующий тюльпан", 140, 50, 630, 250)
+        self.go_to_exit = self.add_button("Выйти", 140, 50, 630, 500)
 
         # картинка
         self.pic = QtWidgets.QLabel(self)
@@ -53,16 +53,8 @@ class MainWindow(QMainWindow):
             lambda image_path=self.s_p_rose, index=Type.ROSE.value, count=self.count_r: self.next(self.s_p_rose,
                                                                                                   Type.ROSE.value,
                                                                                                   self.count_r))
-        self.btn_back_rose.clicked.connect(
-            lambda image_path=self.s_p_rose, index=Type.ROSE.value, count=self.count_r: self.back(self.s_p_rose,
-                                                                                                  Type.ROSE.value,
-                                                                                                  self.count_r))
         self.btn_next_tulip.clicked.connect(
             lambda image_path=self.s_p_tulip, index=Type.TULIP.value, count=self.count_t: self.next(self.s_p_tulip,
-                                                                                                    Type.TULIP.value,
-                                                                                                    self.count_t))
-        self.btn_back_tulip.clicked.connect(
-            lambda image_path=self.s_p_tulip, index=Type.TULIP.value, count=self.count_t: self.back(self.s_p_tulip,
                                                                                                     Type.TULIP.value,
                                                                                                     self.count_t))
 
@@ -96,36 +88,12 @@ class MainWindow(QMainWindow):
         """
         try:
             if count >= 1000 or count < 1:
-                image_path = os.path.join("dataset", index, "0001.jpg")
+                image_path = os.path.join("dataset", CLASS_DEFAULT[index], "0001.jpg")
             else:
                 next = IteratorOfExemplar("annotation.csv", image_path).__next__()
                 next.replace("", '"')
                 image_path = next.replace("/", "\\")
                 count += 1
-            self.pic.setPixmap(QtGui.QPixmap(image_path.replace('"', "")))
-            if index == 0 and count != 0:
-                self.s_p_rose = image_path
-                self.count_r = count
-            elif index == 1 and count != 0:
-                self.s_p_tulip = image_path
-                self.count_t = count
-            else:
-                self.pic.setText('Ошибка!\n' + 'Нет начальных картинок: "rose" или "tulip"')
-        except OSError:
-            print("error")
-
-    def back(self, image_path: str, index: int, count: int):
-        """
-            метод перехода к предыдущей картинки
-        """
-        try:
-            if count >= 1000 or count < 1:
-                image_path = os.path.join("dataset", index, "0001.jpg")
-            else:
-                next = IteratorOfExemplar("annotation.csv", image_path).__back__()
-                next.replace("", '"')
-                image_path = next.replace("/", "\\")
-                count -= 1
             self.pic.setPixmap(QtGui.QPixmap(image_path.replace('"', "")))
             if index == 0 and count != 0:
                 self.s_p_rose = image_path

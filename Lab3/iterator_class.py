@@ -1,50 +1,20 @@
-import csv
+import next_element as next
 
 
 class IteratorOfExemplar:
     """
         Класс нужен чтобы обойти объекты внутри собственного класса
     """
-    def __init__(self, file_name: str, class_name: str):
+    def __init__(self, file_name: str, pointer: str):
         """
             Функция зписывает в файл абсолютный и относительный путь и название класса через ;
         """
-        self.limit = -1
-        self.counter = -1
-        self.file_name = file_name
-        self.class_name = class_name
-        self.rows = []
-        with open(file_name, encoding='utf-8') as file:
-            reader = csv.reader(file, delimiter=";")
-            for row in reader:
-                if row[2] == class_name:
-                    self.rows.append(row[0] + ';' + row[2])
-                    self.limit += 1
-
-    def __iter__(self) -> str:
-        """
-            Функция просто возвращает self
-        """
-        return self
+        self.filename = file_name
+        self.pointer = pointer
 
     def __next__(self) -> str:
         """
-            Функция перехода к следующему элементу
+            возвращает следующий элемент
         """
-        if self.counter < self.limit:
-            self.counter += 1
-            return self.rows[self.counter]
-        else:
-            raise StopIteration
-            return None
-
-    def __back__(self) -> str:
-        """
-            возвращает предыдущий элемент
-        """
-        if self.counter < self.limit:
-            self.counter -= 1
-            return self.rows[self.counter]
-        else:
-            raise StopIteration
-            return None
+        self.pointer = next.next_element(self.filename, self.pointer)
+        return self.pointer
