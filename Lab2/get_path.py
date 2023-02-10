@@ -5,7 +5,7 @@ logging.basicConfig(level='DEBUG', filename='mylog.log')
 logger = logging.getLogger()
 
 
-def download_relative_path(name_class: str, number: int):
+def download_relative_path(name_class: str, number: int) -> str:
     """
         Функция возвращает путь к файлу аннотации
         :name_class: - название класса
@@ -15,7 +15,7 @@ def download_relative_path(name_class: str, number: int):
     return os.path.join(f"dataset/{name_class}/{str(number).zfill(4)}.jpg")
 
 
-def changed_relative_path(name_class: str, number: int):
+def changed_relative_path(name_class: str, number: int) -> str:
     """
         Функция возвращает путь к файлу копирования
         :name_class: - название класса
@@ -25,7 +25,7 @@ def changed_relative_path(name_class: str, number: int):
     return os.path.join(f"dataset/copy_elements/{name_class}_{str(number).zfill(4)}.jpg")
 
 
-def random_relative_path(number: int):
+def random_relative_path(number: int) -> str:
     """
         Функция возвращает путь к файлу рандомного копирования
         :name_class: - название класса
@@ -35,7 +35,7 @@ def random_relative_path(number: int):
     return os.path.join(f"dataset/random_copy/{str(number).zfill(4)}.jpg")
 
 
-def get_absolute_path(name_class: str, number: int, mode: str):
+def get_absolute_path(name_class: str, number: int, mode: str) -> str:
     """
         Функция возвращает абсолютный путь к фалам аннотации
         :name_class: - название класса

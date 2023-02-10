@@ -13,17 +13,17 @@ def random_copy(class_name: str):
     """
         Функция нужна для создания файла и рандомного копирования изображений в новый файл из файла annotation
         :class_name: - имя класса
-        :rand_number: - находит случайное число от 0 до 10000
+        :rand_number: - находит случайное число от 0 до 1000
     """
     logger.debug(f'Function create a file and random copy images to a new file from the annotation file = {class_name}')
     with open("random_annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])
-        for i in range(43):
-            rand_number = random.randint(0, 43)
+        for i in range(1000):
+            rand_number = random.randint(0, 1000)
             if (os.path.isfile(get_path.get_absolute_path(class_name, i, "download")) == True):
                 while (os.path.isfile(get_path.get_absolute_path(class_name, rand_number, "random")) == True):
-                    rand_number = random.randint(0, 43)
+                    rand_number = random.randint(0, 1000)
                 shutil.copyfile(get_path.get_absolute_path(class_name, i, "download"),
                                 get_path.get_absolute_path(class_name, rand_number, "random"))
                 file_writer.writerow(
