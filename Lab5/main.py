@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 import os
 from PIL import Image
+import glob
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 
 
 class Cnn(nn.Module):
@@ -69,3 +73,35 @@ class Dataset(torch.utils.data.Dataset):
         elif label == os.path.join("new_dataset", "tulip"):
             label = 0
         return img_transformed, label
+
+def сreating_and_training_neural_network():
+    """
+        эта функция создает и обучает модели нейронной сети и сохраняет результаты в специальный файл - result.csv,
+        а также строит графики и анализирует результаты.
+    """
+
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    torch.manual_seed(1234)
+    if device == 'cuda':
+        torch.cuda.manual_seed_all(1234)
+
+    class_labels = []
+    for i in range(1000):
+        class_labels.append(True)
+    for i in range(1000):
+        class_labels.append(False)
+
+    list_pictures = glob.glob(os.path.join('new_dataset', '*.jpg'))
+    train_list, train_test_val, train_val, test_val = train_test_split(list_pictures, class_labels, test_size=0.2, shuffle=True)
+    test_list, val_list, test, val = train_test_split(train_test_val, test_val, test_size=0.5)
+
+    random_idx = np.random.randint(1, len(list_pictures), size=10)
+    fig = plt.figure()
+    i = 1
+    for idx in random_idx:
+        ax = fig.add_subplot(2, 5, i)
+        img = Image.open(list_pictures[idx])
+        plt.imshow(img)
+        i += 1
+    plt.axis('off')
+    plt.show()
