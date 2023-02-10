@@ -2,7 +2,9 @@ import csv
 import os
 import get_path
 import logging
-logging.basicConfig(level=logging.DEBUG, filename="annotation.csv", filemode="w")
+
+logging.basicConfig(level='DEBUG', filename='mylog.log')
+logger = logging.getLogger()
 
 
 def create_annotation(class_name: str):
@@ -11,7 +13,7 @@ def create_annotation(class_name: str):
         :file_writer: - запись в файл
         :class_name: - имя класса
     """
-    logging.getLogger(__name__)
+    logger.debug(f'Create annotation file with absolute and relative way and class = {class_name}')
     with open("annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])

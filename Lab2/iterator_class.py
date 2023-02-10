@@ -1,11 +1,16 @@
 import csv
 import logging
 
+logging.basicConfig(level='DEBUG', filename='mylog.log')
+logger = logging.getLogger()
+
 
 class IteratorOfExemplar:
     """
         Класс нужен чтобы обойти объекты внутри собственного класса
     """
+    logger = logging.getLogger()
+
     def __init__(self, file_name: str, class_name: str):
         """
             Функция зписывает в файл абсолютный и относительный путь и название класса через ;
@@ -13,11 +18,11 @@ class IteratorOfExemplar:
             :class_name: - имя класса
             :reader: - считывает информацию из файла
         """
+        self.logger.debug(f'Function writer in file')
         self.limit = -1
         self.counter = -1
         self.file_name = file_name
         self.class_name = class_name
-        self.logger = logging.getLogger(__name__)
         self.rows = []
         with open(file_name, encoding='utf-8') as file:
             reader = csv.reader(file, delimiter=";")
@@ -30,14 +35,14 @@ class IteratorOfExemplar:
         """
             Функция просто возвращает self
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger.debug(f'iterator of class')
         return self
 
     def __next__(self) -> str:
         """
             Функция перехода к следующему элементу
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger.debug(f'Function of moving to the next element')
         if self.counter < self.limit:
             self.counter += 1
             return self.rows[self.counter]

@@ -3,14 +3,16 @@ import os
 import get_path
 import shutil
 import logging
-logging.basicConfig(level=logging.DEBUG, filename="changed_annotation.csv", filemode="w")
+
+logging.basicConfig(level='DEBUG', filename='mylog.log')
+logger = logging.getLogger()
 
 
 def copy_to_another(class_name: str):
     """
         Функция нужна для создания файла и копирования изображений в новый файл из файла annotation
     """
-    logging.getLogger(__name__)
+    logger.debug(f'The function create a file and copy images to a new file from the annotation file = {class_name}')
     with open("changed_annotation.csv", "a", encoding='utf-8') as w_file:
         file_writer = csv.writer(w_file, delimiter=";", lineterminator="\r")
         file_writer.writerow(["Абсолютный путь", "Относительный путь", "Класс"])
