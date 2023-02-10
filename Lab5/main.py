@@ -6,6 +6,9 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from torchvision import datasets, models, transforms
+import torch.optim as optim
+from torch.utils.data import DataLoader, Dataset
 
 
 class Cnn(nn.Module):
@@ -105,3 +108,28 @@ def сreating_and_training_neural_network():
         i += 1
     plt.axis('off')
     plt.show()
+
+    fixed_transforms = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.RandomResizedCrop(224),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor()
+    ])
+
+    train_data = Dataset(train_list, transform=fixed_transforms)
+    test_data = Dataset(test_list, transform=fixed_transforms)
+    val_data = Dataset(val_list, transform=fixed_transforms)
+    train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=10, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=10, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(dataset=val_data, batch_size=10, shuffle=True)
+
+    model = Cnn().to(device)
+    model.train()
+    optimizer = optim.Adam(params=model.parameters(), lr=0.001)
+    criterion = nn.CrossEntropyLoss()
+    epochs = 10
+
+    train_accuracy = []
+    train_loss = []
+    valid_accuracy = []
+    valid_loss = []
