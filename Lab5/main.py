@@ -77,6 +77,7 @@ class Dataset(torch.utils.data.Dataset):
             label = 0
         return img_transformed, label
 
+
 def сreating_and_training_neural_network():
     """
         эта функция создает и обучает модели нейронной сети и сохраняет результаты в специальный файл - result.csv,
@@ -95,7 +96,8 @@ def сreating_and_training_neural_network():
         class_labels.append(False)
 
     list_pictures = glob.glob(os.path.join('new_dataset', '*.jpg'))
-    train_list, train_test_val, train_val, test_val = train_test_split(list_pictures, class_labels, test_size=0.2, shuffle=True)
+    train_list, train_test_val, train_val, test_val = train_test_split(list_pictures, class_labels, test_size=0.2,
+                                                                       shuffle=True)
     test_list, val_list, test, val = train_test_split(train_test_val, test_val, test_size=0.5)
 
     random_idx = np.random.randint(1, len(list_pictures), size=10)
@@ -133,3 +135,35 @@ def сreating_and_training_neural_network():
     train_loss = []
     valid_accuracy = []
     valid_loss = []
+
+    for epoch in range(epochs):
+        epoch_loss = 0
+        epoch_accuracy = 0
+        for data, label in train_loader:
+            data = data.to(device)
+            label = label.to(device)
+            output = model(data)
+            loss = criterion(output, label)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            acc = ((output.argmax(dim=1) == label).float().mean())
+            epoch_accuracy += acc / len(train_loader)
+            epoch_loss += loss / len(train_loader)
+        train_accuracy.append(float(epoch_accuracy))
+        train_loss.append(float(epoch_loss))
+        print('Epoch : {}, train accuracy : {}, train loss : {}'.format(epoch + 1, epoch_accuracy, epoch_loss))
+        with torch.no_grad():
+            epoch_val_accuracy = 0
+            epoch_val_loss = 0
+            for data, label in val_loader:
+                data = data.to(device)
+                label = label.to(device)
+                val_output = model(data)
+                val_loss = criterion(val_output, label)
+                acc = ((val_output.argmax(dim=1) == label).float().mean())
+                epoch_val_accuracy += acc / len(val_loader)
+                epoch_val_loss += val_loss / len(val_loader)
+            valid_accuracy.append(float(epoch_val_accuracy))
+            valid_loss.append(float(epoch_val_loss))
+            print('Epoch : {}, val_accuracy : {}, val_loss : {}'.format(epoch + 1, epoch_val_accuracy, epoch_val_loss))
