@@ -10,6 +10,7 @@ from torchvision import datasets, models, transforms
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 import pandas as pd
+import random
 
 
 class Cnn(nn.Module):
@@ -186,3 +187,27 @@ def сreating_and_training_neural_network():
         prob.append(train_accuracy[i])
     submission = pd.DataFrame({'id': idx, 'label': prob})
     submission.to_csv('result.csv', index=False)
+
+
+if __name__ == '__main__':
+    submission = pd.read_csv('result.csv')
+    id_list = []
+    class_ = {1: os.path.join("new_dataset", "rose"), 0: os.path.join("new_dataset", "tulip")}
+    fig = plt.figure()
+    while True:
+        try:
+            i = random.choice(submission['id'].values)
+            class_label_random = random.choice(['tulip', 'rose'])
+            label = submission.loc[submission['id'] == i, 'label'].values[0]
+            if label > 0.5:
+                label = 1
+            else:
+                label = 0
+            img_path = os.path.join("new_dataset", f'{class_label_random}.{i:05d}.jpg')
+            img = Image.open(img_path)
+            plt.imshow(Image.open(img_path))
+            plt.axis('off')
+            plt.suptitle(class_[label])
+            plt.show()
+        except:
+            print("error! i'm not this path!")
