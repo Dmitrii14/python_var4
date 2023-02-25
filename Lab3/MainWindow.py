@@ -8,6 +8,7 @@ from main import create_annotation
 from PyQt6.QtCore import QSize
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QFileDialog
 from PyQt6 import QtGui, QtWidgets
+from typing import Type
 
 CLASS_DEFAULT = ["rose", "tulip"]
 
@@ -21,21 +22,24 @@ class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         # параметры окна
-        self.setWindowTitle("Main window")
+        self.setWindowTitle("Pictures")
         self.dataset_path = QFileDialog.getExistingDirectory(self, 'Путь к папке базового датасет')
+        self.setFixedSize(QSize(800, 600))
         src = QLabel(f'Базовый датасет:\n{self.dataset_path}', self)
         src.setFixedSize(QSize(800, 50))
 
         # стартовые значения
         self.count_r = 0
         self.count_t = 0
-        self.s_p_rose = os.path.join("dataset", CLASS_DEFAULT[Type.ROSE.value], "0001.jpg")
-        self.s_p_tulip = os.path.join("dataset", CLASS_DEFAULT[Type.TULIP.value], "0001.jpg")
+        self.s_p_rose = QFileDialog.getOpenFileName(self, 'Путь к первой розе')
+        self.s_p_tulip = QFileDialog.getOpenFileName(self, 'Путь к первому тюльпану')
+        self.s_p_rose = self.s_p_rose[0]
+        self.s_p_tulip = self.s_p_tulip[0]
 
         # кнопки
         self.btn_create_of_annotation = self.add_button("Создать аннотацию", 140, 50, 630, 50)
-        self.btn_copy_of_dataset = self.add_button("Копирование датасет", 140, 50, 630, 100)
-        self.btn_random_of_dataset = self.add_button("Рандомное датасет", 140, 50, 630, 150)
+        self.btn_copy_of_dataset = self.add_button("Копирование датасета", 140, 50, 630, 100)
+        self.btn_random_of_dataset = self.add_button("Рандомный датасет", 140, 50, 630, 150)
         self.btn_next_rose = self.add_button("Следующая роза", 140, 50, 630, 200)
         self.btn_next_tulip = self.add_button("Следующий тюльпан", 140, 50, 630, 250)
         self.go_to_exit = self.add_button("Выйти", 140, 50, 630, 500)
@@ -68,7 +72,7 @@ class MainWindow(QMainWindow):
 
         self.show()
 
-    def add_button(self, name: str, size_x: int, size_y: int, pos_x: int, pos_y: int):
+    def add_button(self, name: str, size_x: int, size_y: int, pos_x: int, pos_y: int) -> type(QPushButton):
         """
             Создание кнопки
             :name: - название кнопки
@@ -82,15 +86,19 @@ class MainWindow(QMainWindow):
         button.move(pos_x, pos_y)
         return button
 
-    def next(self, image_path: str, index: int, count: int):
+    def next(self, image_path: str, index: int, count: int) -> None:
         """
-            метод перехода к следующей картинки
+            метод перехода к следующей картинке
+            :image_path: - путь к первой розе
+            :index: - индификатор картинки(роза или тюльпан)
+            :count: - счетчик
         """
         try:
             if count >= 1000 or count < 1:
-                image_path = os.path.join("dataset", CLASS_DEFAULT[index], "0001.jpg")
+                image_path = QFileDialog.getOpenFileName(self, 'Путь к первой розе')
             else:
-                next = IteratorOfExemplar("annotation.csv", image_path).__next__()
+                annotation_path = QFileDialog.getOpenFileName(self, 'Путь к вашей аннотации')
+                next = IteratorOfExemplar(annotation_path, image_path).__next__()
                 next.replace("", '"')
                 image_path = next.replace("/", "\\")
                 count += 1
@@ -103,10 +111,10 @@ class MainWindow(QMainWindow):
                 self.count_t = count
             else:
                 self.pic.setText('Ошибка!\n' + 'Нет начальных картинок: "rose" или "tulip"')
-        except OSError:
-            print("error")
+        except OSError as error:
+            print(f"{error}")
 
-    def create_annotation(self):
+    def create_annotation(self) -> None:
         """
             метод создания файла аннотации
         """
@@ -115,10 +123,10 @@ class MainWindow(QMainWindow):
             create_annotation(class_name)
             class_name = "tulip"
             create_annotation(class_name)
-        except OSError:
-            print("error")
+        except OSError as error:
+            print(f"{error}")
 
-    def copy_of_dataset(self):
+    def copy_of_dataset(self) -> None:
         """
             метод создания копии dataset
         """
@@ -127,10 +135,10 @@ class MainWindow(QMainWindow):
             cop.copy_to_another(class_name)
             class_name = "tulip"
             cop.copy_to_another(class_name)
-        except OSError:
-            print("error")
+        except OSError as error:
+            print(f"{error}")
 
-    def random_of_dataset(self):
+    def random_of_dataset(self) -> None:
         """
             метод создания рандомизации датасет
         """
@@ -139,10 +147,10 @@ class MainWindow(QMainWindow):
             ran.random_copy(class_name)
             class_name = "tulip"
             ran.random_copy(class_name)
-        except OSError:
-            print("error")
+        except OSError as error:
+            print(f"{error}")
 
-    def exit(self):
+    def exit(self) -> None:
         """
             метод выхода из программы
         """
