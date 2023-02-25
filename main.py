@@ -10,6 +10,30 @@ class DataAnalysis:
         self.df = None
         self.forming_data_frame()
 
+    def image_shapes(self, all_path: pd.Series) -> tuple:
+        """
+        Функция для изображения в столбце находит ширину, высоту и каналы, возвращает кортеж из 3 столбцов, хранящих
+        ширину, высоту и количество каналов изображений
+        :all_path: - это список путей
+        """
+        height_image = []
+        width_image = []
+        channels_image = []
+        numerical = []
+        label_n = 0
+        for image_path in all_path:
+            image = cv2.imread(image_path)
+            img_height, img_width, img_channels = image.shape
+            width_image.append(img_width)
+            height_image.append(img_height)
+            channels_image.append(img_channels)
+            numerical.append(label_n)
+            self.df['numerical'] = numerical
+            self.df['width'] = width_image
+            self.df['height'] = height_image
+            self.df['channel'] = channels_image
+        return pd.Series(width_image), pd.Series(height_image), pd.Series(channels_image)
+
     def image_form(self, all_path: pd.Series) -> None:
         """
             функция для изображения в столбце находит ширину, высоту и каналы.
@@ -108,9 +132,6 @@ class DataAnalysis:
         plt.xlabel('intensity')
         plt.xlim([0, 256])
         plt.show()
-
-    def saving_in_csv_file(self, filename: str):
-        self.df.to_csv(filename)
 
 
 if __name__ == "__main__":
