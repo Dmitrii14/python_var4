@@ -80,7 +80,7 @@ class Dataset(torch.utils.data.Dataset):
         return img_transformed, label
 
 
-def сreating_and_training_neural_network():
+def creating_and_training_neural_network():
     """
         эта функция создает и обучает модели нейронной сети и сохраняет результаты в специальный файл - result.csv,
         а также строит графики и анализирует результаты.
