@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+Lab2/dataset/
+Lab3/dataset/
+Lab5/dataset/
