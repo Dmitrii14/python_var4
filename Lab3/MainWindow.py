@@ -5,7 +5,7 @@ import sys
 import os
 from enum import Enum
 from main import create_annotation
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QFileDialog
 from PyQt6 import QtGui, QtWidgets
 from typing import Type
@@ -21,6 +21,15 @@ class Type(Enum):
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
+        self.text_directory = None
+        self.dirname = None
+        self.rose_index = 0
+        self.tulip_index = 0
+        self.tiger_path = None
+        self.text = None
+        self.image_tulip = None
+        self.image_rose = None
+
         # параметры окна
         self.setWindowTitle("Pictures")
         self.dataset_path = QFileDialog.getExistingDirectory(self, 'Путь к папке базового датасет')
@@ -31,17 +40,16 @@ class MainWindow(QMainWindow):
         # стартовые значения
         self.count_r = 0
         self.count_t = 0
-        self.s_p_rose = QFileDialog.getOpenFileName(self, 'Путь к первой розе')
-        self.s_p_tulip = QFileDialog.getOpenFileName(self, 'Путь к первому тюльпану')
-        self.s_p_rose = self.s_p_rose[0]
-        self.s_p_tulip = self.s_p_tulip[0]
+        self.s_p_rose = os.path.join(self.dataset_path, CLASS_DEFAULT[0], "0001.jpg")
+        self.s_p_tulip = os.path.join(self.dataset_path, CLASS_DEFAULT[1], "0001.jpg")
 
         # кнопки
-        self.btn_create_of_annotation = self.add_button("Создать аннотацию", 140, 50, 630, 50)
-        self.btn_copy_of_dataset = self.add_button("Копирование датасета", 140, 50, 630, 100)
-        self.btn_random_of_dataset = self.add_button("Рандомный датасет", 140, 50, 630, 150)
-        self.btn_next_rose = self.add_button("Следующая роза", 140, 50, 630, 200)
-        self.btn_next_tulip = self.add_button("Следующий тюльпан", 140, 50, 630, 250)
+        self.btn_get_directory = self.add_button("Выбрать директорию", 140, 50, 630, 50)
+        self.btn_create_of_annotation = self.add_button("Создать аннотацию", 140, 50, 630, 100)
+        self.btn_copy_of_dataset = self.add_button("Копирование датасета", 140, 50, 630, 150)
+        self.btn_random_of_dataset = self.add_button("Рандомный датасет", 140, 50, 630, 200)
+        self.btn_next_rose = self.add_button("Следующая роза", 140, 50, 630, 250)
+        self.btn_next_tulip = self.add_button("Следующий тюльпан", 140, 50, 630, 300)
         self.go_to_exit = self.add_button("Выйти", 140, 50, 630, 500)
 
         # картинка
@@ -52,7 +60,7 @@ class MainWindow(QMainWindow):
 
         if not os.path.exists(self.s_p_rose) or os.path.exists(self.s_p_tulip):
             self.pic.setText('Ошибка!\n' + 'В базовом датасете нету начальных картинок: "rose" или "tulip"')
-
+        self.btn_get_directory.clicked.connect(self.get_directory)
         self.btn_next_rose.clicked.connect(
             lambda image_path=self.s_p_rose, index=Type.ROSE.value, count=self.count_r: self.next(self.s_p_rose,
                                                                                                   Type.ROSE.value,
@@ -86,6 +94,35 @@ class MainWindow(QMainWindow):
         button.move(pos_x, pos_y)
         return button
 
+    def get_directory(self) -> None:
+        """
+        Выбор директории для работы.
+        """
+        self.rose_index = 0
+        self.tulip_index = 0
+        self.dataset_path = QFileDialog.getExistingDirectory(self)
+        self.text_directory.setText(f"Текущая папка: {self.dataset_path}")
+        self.dirname = os.path.dirname(self.dataset_path)
+        if os.path.isdir(os.path.join(self.dataset_path, "rose")) & os.path.isdir(os.path.join(self.dataset_path, 
+                                                                                               "tulip")):
+            rosefiles = []
+            for (dirpath, dirnames, filenames) in os.walk(os.path.join(self.dataset_path, CLASS_DEFAULT[0])):
+                rosefiles.extend(filenames)
+                self.rose_path = os.path.join(self.dataset_path, CLASS_DEFAULT[0], rosefiles[0])
+                self.image_rose.setPixmap(QtGui.QPixmap(self.rose_path).scaled(self.image_rose.height(),
+                                                                                self.image_rose.width(), 
+                                                                                aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
+            tulipfiles = []
+            for (dirpath, dirnames, filenames) in os.walk(os.path.join(self.dataset_path, CLASS_DEFAULT[1])):
+                tulipfiles.extend(filenames)
+                self.tulip_path = os.path.join(self.dataset_path, CLASS_DEFAULT[1], tulipfiles[0])
+                self.image_tulip.setPixmap(QtGui.QPixmap(self.tulip_path).scaled(self.image_tulip.height(), 
+                                                                                 self.image_tulip.width(), 
+                                                                                 aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
+                self.text.setText("Папка выбрана!")
+        else:
+            self.text.setText("Здесь нет папок rose и tulip!")
+            
     def next(self, image_path: str, index: int, count: int) -> None:
         """
             метод перехода к следующей картинке
