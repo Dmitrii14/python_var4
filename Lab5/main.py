@@ -11,6 +11,7 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 import pandas as pd
 import random
+from typing import Tuple
 
 
 class Cnn(nn.Module):
@@ -47,7 +48,11 @@ class Cnn(nn.Module):
         self.fc2 = nn.Linear(10, 2)
         self.relu = nn.ReLU()
 
-    def forward(self, x):
+    def forward(self, x) -> tuple:
+        """
+        Метод определяет, каким образом данные будут проходить по сети (прогон данных через нейронную сеть)
+        :x: - это параметр с входными данными
+        """
         out = self.layer1(x)
         out = self.layer2(out)
         out = self.layer3(out)
@@ -61,7 +66,7 @@ class Dataset(torch.utils.data.Dataset):
     """
         Этот класс предназначен для загрузки изображений
     """
-    def __init__(self, file_list, transform=None):
+    def __init__(self, file_list, transform=None) -> None:
         self.transform = transform
         self.file_list = file_list
 
@@ -69,7 +74,7 @@ class Dataset(torch.utils.data.Dataset):
         self.filelength = len(self.file_list)
         return self.filelength
 
-    def __getitem__(self, idx: int):
+    def __getitem__(self, idx: int) -> Tuple[torch.tensor, int]:
         img = Image.open(self.file_list[idx])
         img_transformed = self.transform(img.convert("RGB"))
         label = self.file_list[idx].split('/')[-1].split('.')[0]
@@ -80,7 +85,7 @@ class Dataset(torch.utils.data.Dataset):
         return img_transformed, label
 
 
-def creating_and_training_neural_network():
+def creating_and_training_neural_network() -> None:
     """
         эта функция создает и обучает модели нейронной сети и сохраняет результаты в специальный файл - result.csv,
         а также строит графики и анализирует результаты.
