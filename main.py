@@ -5,9 +5,9 @@ import cv2
 
 
 class DataAnalysis:
-    def __init__(self) -> None:
+    def __init__(self, path: str) -> None:
         self.df = None
-        self.forming_data_frame()
+        self.forming_data_frame(path)
 
     def image_shapes(self, all_path: pd.Series) -> tuple:
         """
@@ -89,7 +89,7 @@ class DataAnalysis:
                 cv2.calcHist([img], [1], None, [256], [0, 256]) / (height * width),
                 cv2.calcHist([img], [2], None, [256], [0, 256]) / (height * width)]
 
-    def plots_the_histogram_data(self):
+    def plots_the_histogram_data(self) -> None:
         """
             данная функция строит график по данным гистограммы
         """
